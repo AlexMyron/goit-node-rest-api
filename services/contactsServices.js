@@ -19,7 +19,7 @@ const updateContacts = async contactsList => {
   }
 };
 
-const getAllContacts = async () => {
+const listContacts = async () => {
   try {
     const contacts = await fs.readFile(contactsPath, 'utf-8');
     return JSON.parse(contacts);
@@ -29,17 +29,19 @@ const getAllContacts = async () => {
   }
 };
 
-const getOneContact = async contactId => {
-  const contacts = await getAllContacts();
-  return contacts.find(({ id }) => id === contactId) || null;
+const getContactById = async contactId => {
+  const contacts = await listContacts();
+  const theContact = contacts.find(({ id }) => id === contactId) || null;
+
+  return theContact;
 };
 
-const deleteContact = async contactId => {
-  const contacts = await getAllContacts();
+const removeContact = async contactId => {
+  const contacts = await listContacts();
   const theContactIdx = contacts.findIndex(({ id }) => id === contactId);
 
   if (theContactIdx === -1)
-    throw new Error(`Contact with id ${contactId} not found...`);
+    return null;
 
   const theContact = contacts[theContactIdx];
   contacts.splice(theContactIdx, 1);
@@ -47,13 +49,13 @@ const deleteContact = async contactId => {
   return theContact;
 };
 
-const createContact = async data => {
+const addContact = async data => {
   const newContact = {
     id: nanoid(),
     ...data,
   };
 
-  const contactsList = await getAllContacts();
+  const contactsList = await listContacts();
   contactsList.push(newContact);
   await updateContacts(contactsList);
 
@@ -64,7 +66,7 @@ const updateContact = async data => {
   if (!data || !data.id)
     throw new Error('Invalid data: ID is required for updating a contact');
 
-  const contacts = await getAllContacts();
+  const contacts = await listContacts();
   const theContactIdx = contacts.findIndex(({ id }) => id === data.id);
 
   if (theContactIdx === -1)
@@ -77,9 +79,9 @@ const updateContact = async data => {
 };
 
 export default {
-  getAllContacts,
-  getOneContact,
-  deleteContact,
-  createContact,
+  listContacts,
+  getContactById,
+  removeContact,
+  addContact,
   updateContact,
 };
