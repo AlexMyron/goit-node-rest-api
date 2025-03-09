@@ -2,7 +2,7 @@ import contactsServices from '../services/contactsServices.js';
 import HttpError from '../helpers/HttpError.js';
 import ctrlWrapper from '../decorators/contactsDecorators.js';
 
-export const listContacts = async (_, res) => {
+const listContacts = async (_, res) => {
   const contacts = await contactsServices.listContacts();
   if (!contacts.length) {
     throw HttpError(404, 'No contacts found');
@@ -10,7 +10,7 @@ export const listContacts = async (_, res) => {
   res.status(200).json(contacts);
 };
 
-export const getContactById = async (req, res, next) => {
+const getContactById = async (req, res, next) => {
   const theContact = await contactsServices.getContactById(req.params.id);
   if (!theContact) {
     throw HttpError(404, 'Not found');
@@ -18,7 +18,7 @@ export const getContactById = async (req, res, next) => {
   res.status(200).json(theContact);
 };
 
-export const removeContact = async (req, res, next) => {
+const removeContact = async (req, res, next) => {
   const theContact = await contactsServices.removeContact(req.params.id);
   if (!theContact) {
     throw HttpError(404, 'Not found');
@@ -26,12 +26,12 @@ export const removeContact = async (req, res, next) => {
   res.status(200).json({ message: 'Contact deleted', contact: theContact });
 };
 
-export const addContact = async (req, res, next) => {
+const addContact = async (req, res, next) => {
   const newContact = await contactsServices.addContact(req.body);
   res.status(201).json(newContact);
 };
 
-export const updateContact = async (req, res, next) => {
+const updateContact = async (req, res, next) => {
   if (Object.keys(req.body).length === 0) {
     throw HttpError(400, 'Body must have at least one field');
   }
