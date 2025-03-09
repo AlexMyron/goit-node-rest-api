@@ -1,11 +1,5 @@
 import express from 'express';
-import {
-  listContacts,
-  getContactById,
-  removeContact,
-  addContact,
-  updateContact,
-} from '../controllers/contactsControllers.js';
+import contactsControllers from '../controllers/contactsControllers.js';
 
 import {
   addContactSchema,
@@ -15,14 +9,14 @@ import validateBody from '../helpers/validateBody.js';
 
 const contactsRouter = express.Router();
 
-contactsRouter.get('/', listContacts);
+contactsRouter.get('/', contactsControllers.listContacts);
 
-contactsRouter.get('/:id', getContactById);
+contactsRouter.get('/:id', contactsControllers.getContactById);
 
-contactsRouter.delete('/:id', removeContact);
+contactsRouter.delete('/:id', contactsControllers.removeContact);
 
-contactsRouter.post('/', validateBody(addContactSchema), addContact);
+contactsRouter.post('/', validateBody(addContactSchema), contactsControllers.addContact);
 
-contactsRouter.put('/:id', validateBody(updateContactSchema), updateContact);
+contactsRouter.put('/:id', validateBody(updateContactSchema), contactsControllers.updateContact);
 
 export default contactsRouter;
