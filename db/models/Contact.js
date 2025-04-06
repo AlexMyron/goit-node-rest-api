@@ -2,12 +2,7 @@ import { DataTypes } from 'sequelize';
 
 import sequelize from '../sequelize.js';
 
-const Contact = sequelize.define('contact', {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-  },
+const User = sequelize.define('contact', {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -33,6 +28,10 @@ const Contact = sequelize.define('contact', {
       is: /^[0-9+\-().\s]+$/i,
     },
   },
+  favorite: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
 });
 
-export default Contact;
+export default User;
