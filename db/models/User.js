@@ -34,4 +34,6 @@ const User = sequelize.define('contact', {
   },
 });
 
+// User.sync({force: true});
+
 export default User;
