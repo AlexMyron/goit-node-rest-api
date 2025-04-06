@@ -10,7 +10,7 @@ const listContacts = async (_, res) => {
   res.status(200).json(contacts);
 };
 
-const getContactById = async (req, res, next) => {
+const getContactById = async (req, res) => {
   const theContact = await contactsServices.getContactById(req.params.id);
   if (!theContact) {
     throw HttpError(404, 'Not found');
@@ -18,7 +18,7 @@ const getContactById = async (req, res, next) => {
   res.status(200).json(theContact);
 };
 
-const removeContact = async (req, res, next) => {
+const removeContact = async (req, res) => {
   const theContact = await contactsServices.removeContact(req.params.id);
   if (!theContact) {
     throw HttpError(404, 'Not found');
@@ -26,20 +26,20 @@ const removeContact = async (req, res, next) => {
   res.status(200).json({ message: 'Contact deleted', contact: theContact });
 };
 
-const addContact = async (req, res, next) => {
+const addContact = async (req, res) => {
   const newContact = await contactsServices.addContact(req.body);
   res.status(201).json(newContact);
 };
 
-const updateContact = async (req, res, next) => {
+const updateContact = async (req, res) => {
   if (Object.keys(req.body).length === 0) {
     throw HttpError(400, 'Body must have at least one field');
   }
 
-  const updatedContact = await contactsServices.updateContact({
-    ...req.body,
-    id: req.params.id,
-  });
+  const updatedContact = await contactsServices.updateContact(
+    req.params.id,
+    req.body
+  );
 
   if (!updatedContact) {
     throw HttpError(404, `Contact with id ${req.params.id} not found`);
@@ -47,10 +47,25 @@ const updateContact = async (req, res, next) => {
   res.status(200).json(updatedContact);
 };
 
+const updateStatusContact = async (req, res) => {
+  const { contactId } = req.params;
+  const updatedContact = await contactsServices.updateStatusContact(
+    contactId,
+    req.body
+  );
+
+  if (!updatedContact) {
+    throw HttpError(404, `Contact with id ${contactId} not found`);
+  }
+
+  res.status(200).json(updatedContact);
+}
+
 export default {
   listContacts: ctrlWrapper(listContacts),
   getContactById: ctrlWrapper(getContactById),
   removeContact: ctrlWrapper(removeContact),
   addContact: ctrlWrapper(addContact),
   updateContact: ctrlWrapper(updateContact),
+  updateStatusContact: ctrlWrapper(updateStatusContact),
 };

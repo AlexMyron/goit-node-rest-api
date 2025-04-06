@@ -7,6 +7,7 @@ export const addContactSchema = Joi.object({
     .trim()
     .pattern(/^\+?[0-9\s\-()]{7,20}$/)
     .required(),
+  favorite: Joi.boolean().optional(),
 });
 
 export const updateContactSchema = Joi.object({
@@ -26,6 +27,7 @@ export const updateContactSchema = Joi.object({
       'string.pattern.base':
         'Phone number must be between 7 and 20 characters and can contain digits, spaces, dashes, and parentheses.',
     }),
+  favorite: Joi.boolean().optional(),
 })
   .min(1)
   .messages({
