@@ -7,7 +7,7 @@ const listContacts = async (_, res) => {
   if (!contacts.length) {
     throw HttpError(404, 'No contacts found');
   }
-  res.status(200).json(contacts);
+  res.json(contacts);
 };
 
 const getContactById = async (req, res) => {
@@ -15,7 +15,7 @@ const getContactById = async (req, res) => {
   if (!theContact) {
     throw HttpError(404, 'Not found');
   }
-  res.status(200).json(theContact);
+  res.json(theContact);
 };
 
 const removeContact = async (req, res) => {
@@ -23,7 +23,7 @@ const removeContact = async (req, res) => {
   if (!theContact) {
     throw HttpError(404, 'Not found');
   }
-  res.status(200).json({ message: 'Contact deleted', contact: theContact });
+  res.json({ message: 'Contact deleted', contact: theContact });
 };
 
 const addContact = async (req, res) => {
@@ -44,7 +44,7 @@ const updateContact = async (req, res) => {
   if (!updatedContact) {
     throw HttpError(404, `Contact with id ${req.params.id} not found`);
   }
-  res.status(200).json(updatedContact);
+  res.json(updatedContact);
 };
 
 const updateStatusContact = async (req, res) => {
@@ -58,7 +58,7 @@ const updateStatusContact = async (req, res) => {
     throw HttpError(404, `Contact with id ${contactId} not found`);
   }
 
-  res.status(200).json(updatedContact);
+  res.json(updatedContact);
 }
 
 export default {
